@@ -1,3 +1,12 @@
-﻿{
-	"name": "vcow.base.audio-manager"
+{
+    "name": "vcow.base.audio-manager",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": []
 }
