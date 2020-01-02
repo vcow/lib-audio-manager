@@ -653,7 +653,7 @@ namespace Base.AudioManager
 				src.clip = clip;
 				src.volume = SoundVolume;
 				src.mute = !SoundIsHeard;
-				src.loop = loopCount > 1;
+				src.loop = loopCount != 1;
 			}
 			else
 			{
@@ -665,7 +665,7 @@ namespace Base.AudioManager
 				src.volume = SoundVolume;
 				src.ignoreListenerVolume = true;
 				src.mute = !SoundIsHeard;
-				src.loop = loopCount > 1;
+				src.loop = loopCount != 1;
 
 				srcCtrl.DestroyEvent.AddListener(() =>
 				{
