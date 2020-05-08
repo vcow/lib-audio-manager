@@ -216,9 +216,9 @@ namespace Base.AudioManager
 			private set
 			{
 				if (value.Equals(_musicVolume)) return;
-				var oldValue = _musicVolume;
+				var args = new VolumeChangedEventArgs(value, _musicVolume);
 				_musicVolume = value;
-				MusicVolumeChangedEvent?.Invoke(_musicVolume, oldValue);
+				MusicVolumeChangedEvent?.Invoke(this, args);
 			}
 		}
 
@@ -228,15 +228,17 @@ namespace Base.AudioManager
 			private set
 			{
 				if (value.Equals(_soundVolume)) return;
-				var oldValue = _soundVolume;
+				var args = new VolumeChangedEventArgs(value, _musicVolume);
 				_soundVolume = value;
-				SoundVolumeChangedEvent?.Invoke(_soundVolume, oldValue);
+				SoundVolumeChangedEvent?.Invoke(this, args);
 			}
 		}
 
-		public event VolumeChangedHandler MusicVolumeChangedEvent;
-
-		public event VolumeChangedHandler SoundVolumeChangedEvent;
+		public event EventHandler<MuteChangedEventArgs> MuteMusicChangedEvent;
+		public event EventHandler<MuteChangedEventArgs> MuteSoundChangedEvent;
+		public event EventHandler<VolumeChangedEventArgs> MusicVolumeChangedEvent;
+		public event EventHandler<VolumeChangedEventArgs> SoundVolumeChangedEvent;
+		public event EventHandler<SoundStateChangedEventArgs> SoundStateChangedEvent;
 
 		private void PersistCurrentState()
 		{
@@ -471,10 +473,6 @@ namespace Base.AudioManager
 			_fadeRoutines[source] = StartCoroutine(FadeRoutine(source, destValue, duration, callback));
 		}
 
-		public event SoundStateChangedHandler PlaySoundEvent;
-
-		public event SoundStateChangedHandler StopSoundEvent;
-
 		public int PlaySound(string id, float muffleOthersPercent = 0, int priority = 0, int loopCount = 1,
 			SystemLanguage language = SystemLanguage.Unknown, AudioSource audioSource = null)
 		{
@@ -525,7 +523,7 @@ namespace Base.AudioManager
 			UpdateMuffle(soundId, muffleOthersPercent);
 			UpdateMuting();
 
-			PlaySoundEvent?.Invoke(soundId);
+			SoundStateChangedEvent?.Invoke(this, new SoundStateChangedEventArgs(soundId, true));
 			return soundId;
 		}
 
@@ -585,7 +583,7 @@ namespace Base.AudioManager
 				_muteMusic = value;
 				UpdateMuting();
 				PersistCurrentState();
-				MuteMusicChangedEvent?.Invoke(_muteMusic);
+				MuteMusicChangedEvent?.Invoke(this, new MuteChangedEventArgs(_muteMusic));
 			}
 		}
 
@@ -598,13 +596,9 @@ namespace Base.AudioManager
 				_muteSound = value;
 				UpdateMuting();
 				PersistCurrentState();
-				MuteSoundChangedEvent?.Invoke(_muteSound);
+				MuteSoundChangedEvent?.Invoke(this, new MuteChangedEventArgs(_muteSound));
 			}
 		}
-
-		public event MuteChangedHandler MuteMusicChangedEvent;
-
-		public event MuteChangedHandler MuteSoundChangedEvent;
 
 		public bool HasClip(string id, SystemLanguage? language = null)
 		{
@@ -717,7 +711,7 @@ namespace Base.AudioManager
 			}
 
 			UpdateMuffle(soundId, 0);
-			StopSoundEvent?.Invoke(soundId);
+			SoundStateChangedEvent?.Invoke(this, new SoundStateChangedEventArgs(soundId, false));
 		}
 
 		private bool MusicIsHeard => !MuteMusic && _sounds.Count(pair => pair.Key.Exclusive) <= 0;

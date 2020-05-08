@@ -1,13 +1,42 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Base.AudioManager
 {
-	public delegate void VolumeChangedHandler(float value, float oldValue);
+	public class VolumeChangedEventArgs : EventArgs
+	{
+		public float Value { get; }
+		public float PreviousValue { get; }
 
-	public delegate void SoundStateChangedHandler(int soundId);
+		public VolumeChangedEventArgs(float value, float previousValue)
+		{
+			Value = value;
+			PreviousValue = previousValue;
+		}
+	}
 
-	public delegate void MuteChangedHandler(bool mute);
+	public class SoundStateChangedEventArgs : EventArgs
+	{
+		public int SoundId { get; }
+		public bool IsPlaying { get; }
+
+		public SoundStateChangedEventArgs(int soundId, bool isPlaying)
+		{
+			SoundId = soundId;
+			IsPlaying = isPlaying;
+		}
+	}
+
+	public class MuteChangedEventArgs : EventArgs
+	{
+		public bool IsMuted { get; }
+
+		public MuteChangedEventArgs(bool isMuted)
+		{
+			IsMuted = isMuted;
+		}
+	}
 
 	public interface IAudioManager
 	{
@@ -100,31 +129,26 @@ namespace Base.AudioManager
 		/// <summary>
 		/// Событие изменения гашения музыки.
 		/// </summary>
-		event MuteChangedHandler MuteMusicChangedEvent;
+		event EventHandler<MuteChangedEventArgs> MuteMusicChangedEvent;
 
 		/// <summary>
 		/// Событие изменения гашения звука.
 		/// </summary>
-		event MuteChangedHandler MuteSoundChangedEvent;
+		event EventHandler<MuteChangedEventArgs> MuteSoundChangedEvent;
 
 		/// <summary>
 		/// Событие изменения уровня громкости музыки.
 		/// </summary>
-		event VolumeChangedHandler MusicVolumeChangedEvent;
+		event EventHandler<VolumeChangedEventArgs> MusicVolumeChangedEvent;
 
 		/// <summary>
 		/// Событие изменения уровня громкости звука.
 		/// </summary>
-		event VolumeChangedHandler SoundVolumeChangedEvent;
+		event EventHandler<VolumeChangedEventArgs> SoundVolumeChangedEvent;
 
 		/// <summary>
-		/// Событие начала воспроизведения звука, принимает в качестве аргумента идентификатор звука.
+		/// Событие начала/завершения воспроизведения звука.
 		/// </summary>
-		event SoundStateChangedHandler PlaySoundEvent;
-
-		/// <summary>
-		/// Событие окончания воспроизведения звука, принимает в качестве аргумента идентификатор звука.
-		/// </summary>
-		event SoundStateChangedHandler StopSoundEvent;
+		event EventHandler<SoundStateChangedEventArgs> SoundStateChangedEvent;
 	}
 }
