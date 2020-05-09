@@ -234,11 +234,11 @@ namespace Base.AudioManager
 			}
 		}
 
-		public event EventHandler<MuteChangedEventArgs> MuteMusicChangedEvent;
-		public event EventHandler<MuteChangedEventArgs> MuteSoundChangedEvent;
-		public event EventHandler<VolumeChangedEventArgs> MusicVolumeChangedEvent;
-		public event EventHandler<VolumeChangedEventArgs> SoundVolumeChangedEvent;
-		public event EventHandler<SoundStateChangedEventArgs> SoundStateChangedEvent;
+		public event EventHandler MuteMusicChangedEvent;
+		public event EventHandler MuteSoundChangedEvent;
+		public event EventHandler MusicVolumeChangedEvent;
+		public event EventHandler SoundVolumeChangedEvent;
+		public event EventHandler SoundStateChangedEvent;
 
 		private void PersistCurrentState()
 		{
