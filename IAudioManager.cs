@@ -129,26 +129,26 @@ namespace Base.AudioManager
 		/// <summary>
 		/// Событие изменения гашения музыки.
 		/// </summary>
-		event EventHandler MuteMusicChangedEvent;
+		event EventHandler<MuteChangedEventArgs> MuteMusicChangedEvent;
 
 		/// <summary>
 		/// Событие изменения гашения звука.
 		/// </summary>
-		event EventHandler MuteSoundChangedEvent;
+		event EventHandler<MuteChangedEventArgs> MuteSoundChangedEvent;
 
 		/// <summary>
 		/// Событие изменения уровня громкости музыки.
 		/// </summary>
-		event EventHandler MusicVolumeChangedEvent;
+		event EventHandler<VolumeChangedEventArgs> MusicVolumeChangedEvent;
 
 		/// <summary>
 		/// Событие изменения уровня громкости звука.
 		/// </summary>
-		event EventHandler SoundVolumeChangedEvent;
+		event EventHandler<VolumeChangedEventArgs> SoundVolumeChangedEvent;
 
 		/// <summary>
 		/// Событие начала/завершения воспроизведения звука.
 		/// </summary>
-		event EventHandler SoundStateChangedEvent;
+		event EventHandler<SoundStateChangedEventArgs> SoundStateChangedEvent;
 	}
 }
