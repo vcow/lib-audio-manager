@@ -175,6 +175,7 @@ namespace Base.AudioManager
 		{
 			foreach (var coroutine in _fadeRoutines.Values)
 			{
+				if (coroutine == null) continue;
 				StopCoroutine(coroutine);
 			}
 
@@ -184,6 +185,7 @@ namespace Base.AudioManager
 				StopCoroutine(coroutine);
 			}
 
+			_sounds.Clear();
 			_fadeRoutines.Clear();
 		}
 
